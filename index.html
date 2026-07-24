@@ -153,6 +153,7 @@
       display:inline-flex;
       align-items:center;
       gap:8px;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .nav-btn:hover{
@@ -193,12 +194,14 @@
       transition: opacity var(--transition-slow), transform var(--transition-slow);
       will-change: opacity, transform;
       background: transparent;
+      z-index:1;
     }
 
     .view.visible{
       opacity:1;
       transform: translateY(0) scale(1);
       pointer-events:auto;
+      z-index:2;
     }
 
     /* Home view specifics */
@@ -219,8 +222,9 @@
       transform: scale(1.02);
       text-align:center;
       user-select:none;
-      transition: filter var(--transition-fast), transform var(--transition-fast);
+      transition: filter var(--transition-fast), transform var(--transition-fast), opacity var(--transition-fast);
       white-space:nowrap;
+      opacity:1;
     }
 
     .home-center-box{
@@ -240,6 +244,7 @@
       letter-spacing:0.6px;
       transition: transform var(--transition-fast), box-shadow var(--transition-fast), opacity var(--transition-fast);
       backdrop-filter: blur(6px) saturate(120%);
+      opacity:1;
     }
 
     .home-center-box:hover{
@@ -406,9 +411,9 @@
 
           <!-- Top navigation: Home / Status / Privacy Policy -->
           <nav class="top-nav" aria-label="Primary">
-            <button class="nav-btn" id="nav-home" data-view="home">Home</button>
-            <button class="nav-btn" id="nav-status" data-view="status">Status</button>
-            <button class="nav-btn active" id="nav-privacy" data-view="privacy">Privacy Policy</button>
+            <button type="button" class="nav-btn" id="nav-home" data-view="home">Home</button>
+            <button type="button" class="nav-btn" id="nav-status" data-view="status">Status</button>
+            <button type="button" class="nav-btn active" id="nav-privacy" data-view="privacy">Privacy Policy</button>
           </nav>
         </header>
 
@@ -635,8 +640,8 @@
   </div>
 
   <script>
-    // Simple view switcher with smooth transitions
     (function(){
+      // Cached elements
       const views = {
         home: document.getElementById('view-home'),
         status: document.getElementById('view-status'),
@@ -644,63 +649,95 @@
       };
 
       const navButtons = Array.from(document.querySelectorAll('.nav-btn'));
-      function setActive(viewKey){
-        // toggle nav button active state
-        navButtons.forEach(btn => {
-          btn.classList.toggle('active', btn.dataset.view === viewKey);
-        });
+      const homeBg = document.querySelector('.home-bg-url');
+      const centerBox = document.querySelector('.home-center-box');
 
-        // show/hide views with transitions
+      // Defensive helper to safely add/remove classes and attributes
+      function showView(key) {
+        if(!views[key]) key = 'privacy';
         Object.keys(views).forEach(k => {
           const el = views[k];
-          if(k === viewKey){
-            el.classList.add('visible');
-            el.setAttribute('aria-hidden','false');
-          } else {
-            el.classList.remove('visible');
-            el.setAttribute('aria-hidden','true');
+          if(!el) return;
+          const visible = (k === key);
+          el.classList.toggle('visible', visible);
+          el.setAttribute('aria-hidden', visible ? 'false' : 'true');
+        });
+
+        navButtons.forEach(btn => {
+          const isActive = (btn.dataset.view === key);
+          btn.classList.toggle('active', isActive);
+          btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
+
+        // subtle home animations
+        if(key === 'home') {
+          if(homeBg) {
+            homeBg.style.opacity = '1';
+            homeBg.style.filter = 'blur(6px)';
+            homeBg.style.transform = 'scale(1.02)';
+          }
+          if(centerBox) {
+            centerBox.style.opacity = '1';
+            centerBox.style.transform = 'translateY(0) scale(1)';
+          }
+        } else {
+          if(homeBg) {
+            homeBg.style.opacity = '0.9';
+            homeBg.style.filter = 'blur(6px)';
+            homeBg.style.transform = 'scale(1.02)';
+          }
+          if(centerBox) {
+            centerBox.style.opacity = '1';
+            centerBox.style.transform = 'translateY(0) scale(1)';
+          }
+        }
+
+        // update hash without adding history entries
+        try { history.replaceState(null, '', '#' + key); } catch(e) {}
+      }
+
+      // Attach events to nav buttons
+      navButtons.forEach(btn => {
+        btn.addEventListener('click', (ev) => {
+          ev.preventDefault();
+          const view = btn.dataset.view;
+          showView(view);
+        });
+
+        // keyboard activation
+        btn.addEventListener('keydown', (ev) => {
+          if(ev.key === 'Enter' || ev.key === ' ') {
+            ev.preventDefault();
+            btn.click();
           }
         });
-
-        // small UI nicety: animate background blur on home show/hide
-        const homeBg = document.querySelector('.home-bg-url');
-        const centerBox = document.querySelector('.home-center-box');
-        if(viewKey === 'home'){
-          if(homeBg) homeBg.style.filter = 'blur(6px)';
-          if(centerBox) centerBox.style.opacity = '1';
-        } else {
-          if(homeBg) homeBg.style.filter = 'blur(6px)';
-          if(centerBox) centerBox.style.opacity = '1';
-        }
-      }
-
-      // attach events
-      navButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-          const view = btn.dataset.view;
-          setActive(view);
-          // update URL hash for direct linking
-          history.replaceState(null, '', '#' + view);
-        });
       });
 
-      // initialize based on hash or default to privacy
-      const initial = (location.hash || '#privacy').replace('#','');
-      if(['home','status','privacy'].includes(initial)) {
-        setActive(initial);
-      } else {
-        setActive('privacy');
-      }
+      // Initialize view from hash or default to privacy
+      const initialHash = (location.hash || '#privacy').replace('#','').toLowerCase();
+      const initial = ['home','status','privacy'].includes(initialHash) ? initialHash : 'privacy';
+      showView(initial);
 
-      // keyboard navigation (H / S / P)
+      // Quick keyboard shortcuts (H / S / P)
       document.addEventListener('keydown', (e) => {
-        if(e.key === 'h' || e.key === 'H') setActive('home');
-        if(e.key === 's' || e.key === 'S') setActive('status');
-        if(e.key === 'p' || e.key === 'P') setActive('privacy');
+        // ignore when typing in inputs or textareas
+        const tag = document.activeElement && document.activeElement.tagName;
+        if(tag === 'INPUT' || tag === 'TEXTAREA' || document.activeElement.isContentEditable) return;
+        if(e.key === 'h' || e.key === 'H') showView('home');
+        if(e.key === 's' || e.key === 'S') showView('status');
+        if(e.key === 'p' || e.key === 'P') showView('privacy');
       });
 
-      // small accessibility: focusable nav buttons
-      navButtons.forEach(btn => btn.setAttribute('tabindex','0'));
+      // Accessibility: ensure nav buttons are focusable
+      navButtons.forEach(btn => {
+        if(!btn.hasAttribute('tabindex')) btn.setAttribute('tabindex','0');
+      });
+
+      // If the page was loaded with a hash that matches a view, ensure scroll position is reset
+      window.addEventListener('hashchange', () => {
+        const h = (location.hash || '#privacy').replace('#','');
+        if(['home','status','privacy'].includes(h)) showView(h);
+      }, false);
     })();
   </script>
 </body>
