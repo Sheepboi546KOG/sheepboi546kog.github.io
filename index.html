@@ -7,12 +7,12 @@
   <meta name="description" content="Privacy Policy for KOG (Kleiner Oil Group) - KOG Bot and KOG-managed communities." />
   <style>
     :root{
-      --bg-1: #062b20; /* very dark green */
-      --bg-2: #0b3d2e; /* dark green */
+      --bg-1: #062b20;
+      --bg-2: #0b3d2e;
       --card-bg: rgba(255,255,255,0.03);
       --card-accent: rgba(255,255,255,0.04);
       --muted: rgba(255,255,255,0.75);
-      --accent: #7bd389; /* soft green accent */
+      --accent: #7bd389;
       --glass-border: rgba(255,255,255,0.06);
       --max-width: 1000px;
       --radius: 14px;
@@ -34,7 +34,6 @@
       line-height:1.5;
     }
 
-    /* Page layout */
     .wrap{
       min-height:100vh;
       display:flex;
@@ -44,7 +43,6 @@
       box-sizing:border-box;
     }
 
-    /* Center card */
     .card{
       width:100%;
       max-width:var(--max-width);
@@ -58,7 +56,6 @@
       position:relative;
     }
 
-    /* Left accent bar */
     .card::before{
       content:"";
       position:absolute;
@@ -71,7 +68,6 @@
       border-bottom-left-radius:var(--radius);
     }
 
-    /* Header area */
     header{
       padding:18px 22px;
       border-bottom:1px solid rgba(255,255,255,0.02);
@@ -80,6 +76,8 @@
       gap:16px;
       background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
       flex-shrink:0;
+      position:relative;
+      z-index: 5; /* ensure header stays on top and nav remains clickable */
     }
 
     .logo{
@@ -133,7 +131,6 @@
       font-size:13px;
     }
 
-    /* Top navigation (Home / Status / Privacy Policy) */
     .top-nav{
       margin-left:auto;
       display:flex;
@@ -170,7 +167,6 @@
       box-shadow: 0 6px 18px rgba(123,211,137,0.08);
     }
 
-    /* Content area */
     .content{
       padding:18px 22px;
       overflow:hidden;
@@ -179,12 +175,16 @@
       position:relative;
       display:flex;
       flex-direction:column;
+      z-index:1;
     }
 
-    /* View containers (home / status / privacy) */
+    /* Views: use display toggling to avoid stacking/click issues */
     .view{
       position:absolute;
-      inset:0;
+      top:0;
+      left:0;
+      right:0;
+      bottom:0;
       padding:22px 28px;
       overflow:auto;
       box-sizing:border-box;
@@ -195,16 +195,17 @@
       will-change: opacity, transform;
       background: transparent;
       z-index:1;
+      display:none; /* hidden by default to avoid overlaying header */
     }
 
     .view.visible{
+      display:block;
       opacity:1;
       transform: translateY(0) scale(1);
       pointer-events:auto;
       z-index:2;
     }
 
-    /* Home view specifics */
     .home-wrap{
       height:100%;
       display:flex;
@@ -252,7 +253,6 @@
       box-shadow: 0 20px 60px rgba(11,61,46,0.45);
     }
 
-    /* Status view specifics */
     .status-wrap{
       display:flex;
       flex-direction:column;
@@ -278,12 +278,10 @@
       border:1px solid rgba(123,211,137,0.06);
     }
 
-    /* Privacy view uses the existing policy content; keep text styles same as before */
     .policy-inner{
       padding-right:8px;
     }
 
-    /* Make headings stand out */
     h2{
       margin-top:18px;
       margin-bottom:8px;
@@ -339,7 +337,6 @@
       margin:18px 0;
     }
 
-    /* Table of contents (kept for privacy view) */
     .toc{
       display:flex;
       gap:12px;
@@ -357,7 +354,6 @@
       border:1px solid rgba(123,211,137,0.03);
     }
 
-    /* Footer */
     footer{
       padding:12px 18px;
       border-top:1px solid rgba(255,255,255,0.02);
@@ -374,7 +370,6 @@
       font-size:13px;
     }
 
-    /* Responsive */
     @media (max-width:920px){
       :root{ --max-width:760px; }
       .home-bg-url{ font-size:44px; }
@@ -398,7 +393,6 @@
     <article class="card" role="article" aria-labelledby="policy-title">
       <div style="display:flex;flex-direction:column;width:100%;height:100%;">
         <header>
-          <!-- Logo (image already provided in your file) -->
           <div class="logo" aria-hidden="true" style="padding:0;overflow:hidden;">
             <img src="https://media.discordapp.net/attachments/857448871487602698/1448806414859501688/image.png?ex=6a653b1e&is=6a63e99e&hm=12688e66c298da029f5309d24a7e6c8ac093e42a1647d8f6c022bb4305774dee&=&format=webp&quality=lossless&width=648&height=648"
                  alt="Server Icon">
@@ -409,7 +403,6 @@
             <p class="muted">Last Updated: <strong>25/07/2026 GMT</strong></p>
           </div>
 
-          <!-- Top navigation: Home / Status / Privacy Policy -->
           <nav class="top-nav" aria-label="Primary">
             <button type="button" class="nav-btn" id="nav-home" data-view="home">Home</button>
             <button type="button" class="nav-btn" id="nav-status" data-view="status">Status</button>
@@ -641,70 +634,57 @@
 
   <script>
     (function(){
-      // Cached elements
+      // Elements
       const views = {
         home: document.getElementById('view-home'),
         status: document.getElementById('view-status'),
         privacy: document.getElementById('view-privacy')
       };
-
       const navButtons = Array.from(document.querySelectorAll('.nav-btn'));
-      const homeBg = document.querySelector('.home-bg-url');
-      const centerBox = document.querySelector('.home-center-box');
+      const header = document.querySelector('header');
 
-      // Defensive helper to safely add/remove classes and attributes
+      // Ensure header stays on top for clicks
+      if(header) header.style.zIndex = '5';
+
+      // Utility: show a view and hide others using display + class toggles
       function showView(key) {
         if(!views[key]) key = 'privacy';
         Object.keys(views).forEach(k => {
           const el = views[k];
           if(!el) return;
-          const visible = (k === key);
-          el.classList.toggle('visible', visible);
-          el.setAttribute('aria-hidden', visible ? 'false' : 'true');
+          if(k === key){
+            el.style.display = 'block';
+            // force reflow to allow transition
+            void el.offsetWidth;
+            el.classList.add('visible');
+            el.setAttribute('aria-hidden','false');
+          } else {
+            el.classList.remove('visible');
+            el.setAttribute('aria-hidden','true');
+            // wait for transition to finish then hide to avoid overlay issues
+            setTimeout(() => {
+              if(el && !el.classList.contains('visible')) el.style.display = 'none';
+            }, 260); // slightly longer than --transition-fast
+          }
         });
 
         navButtons.forEach(btn => {
-          const isActive = (btn.dataset.view === key);
-          btn.classList.toggle('active', isActive);
-          btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+          const active = (btn.dataset.view === key);
+          btn.classList.toggle('active', active);
+          btn.setAttribute('aria-pressed', active ? 'true' : 'false');
         });
 
-        // subtle home animations
-        if(key === 'home') {
-          if(homeBg) {
-            homeBg.style.opacity = '1';
-            homeBg.style.filter = 'blur(6px)';
-            homeBg.style.transform = 'scale(1.02)';
-          }
-          if(centerBox) {
-            centerBox.style.opacity = '1';
-            centerBox.style.transform = 'translateY(0) scale(1)';
-          }
-        } else {
-          if(homeBg) {
-            homeBg.style.opacity = '0.9';
-            homeBg.style.filter = 'blur(6px)';
-            homeBg.style.transform = 'scale(1.02)';
-          }
-          if(centerBox) {
-            centerBox.style.opacity = '1';
-            centerBox.style.transform = 'translateY(0) scale(1)';
-          }
-        }
-
-        // update hash without adding history entries
+        // update hash without adding history entry
         try { history.replaceState(null, '', '#' + key); } catch(e) {}
       }
 
-      // Attach events to nav buttons
+      // Attach click handlers
       navButtons.forEach(btn => {
         btn.addEventListener('click', (ev) => {
           ev.preventDefault();
           const view = btn.dataset.view;
           showView(view);
         });
-
-        // keyboard activation
         btn.addEventListener('keydown', (ev) => {
           if(ev.key === 'Enter' || ev.key === ' ') {
             ev.preventDefault();
@@ -713,14 +693,19 @@
         });
       });
 
-      // Initialize view from hash or default to privacy
+      // Initialize: show view based on hash or default to privacy
       const initialHash = (location.hash || '#privacy').replace('#','').toLowerCase();
       const initial = ['home','status','privacy'].includes(initialHash) ? initialHash : 'privacy';
+      // Ensure all views are hidden first to avoid stacking issues
+      Object.keys(views).forEach(k => {
+        const el = views[k];
+        if(el) { el.style.display = 'none'; el.classList.remove('visible'); el.setAttribute('aria-hidden','true'); }
+      });
+      // Show initial
       showView(initial);
 
-      // Quick keyboard shortcuts (H / S / P)
+      // Keyboard shortcuts (H / S / P)
       document.addEventListener('keydown', (e) => {
-        // ignore when typing in inputs or textareas
         const tag = document.activeElement && document.activeElement.tagName;
         if(tag === 'INPUT' || tag === 'TEXTAREA' || document.activeElement.isContentEditable) return;
         if(e.key === 'h' || e.key === 'H') showView('home');
@@ -728,16 +713,11 @@
         if(e.key === 'p' || e.key === 'P') showView('privacy');
       });
 
-      // Accessibility: ensure nav buttons are focusable
-      navButtons.forEach(btn => {
-        if(!btn.hasAttribute('tabindex')) btn.setAttribute('tabindex','0');
-      });
-
-      // If the page was loaded with a hash that matches a view, ensure scroll position is reset
+      // Respond to hash changes (direct links)
       window.addEventListener('hashchange', () => {
-        const h = (location.hash || '#privacy').replace('#','');
+        const h = (location.hash || '#privacy').replace('#','').toLowerCase();
         if(['home','status','privacy'].includes(h)) showView(h);
-      }, false);
+      });
     })();
   </script>
 </body>
