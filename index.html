@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>KOG (Kleiner Oil Group) - Home / Status / Privacy Policy</title>
-  <meta name="description" content="Privacy Policy for KOG (Kleiner Oil Group) - KOG Bot and KOG-managed communities." />
+  <title>Kleiner Oil Group</title>
+  <meta name="description" content="Kleiner Oil Group site: Home, Status, Privacy Policy" />
   <style>
     :root{
       --bg-1: #062b20;
@@ -14,7 +14,6 @@
       --muted: rgba(255,255,255,0.75);
       --accent: #7bd389;
       --glass-border: rgba(255,255,255,0.06);
-      --max-width: 900px;
       --radius: 14px;
       --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Segoe UI Mono", monospace;
       --ui: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
@@ -43,10 +42,13 @@
       box-sizing:border-box;
     }
 
+    /* Card scaled to cover roughly 75% of viewport width and height */
     .card{
-      width:100%;
-      max-width:var(--max-width);
-      height:80vh;
+      width:75vw;
+      max-width:1200px;
+      min-width:520px;
+      height:75vh;
+      min-height:520px;
       background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
       border-radius:var(--radius);
       box-shadow: 0 10px 30px rgba(2,8,6,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
@@ -85,10 +87,11 @@
       gap:16px;
     }
 
+    /* Larger logo in top-left of the box */
     .logo{
-      width:56px;
-      height:56px;
-      border-radius:10px;
+      width:96px;
+      height:96px;
+      border-radius:12px;
       background: linear-gradient(135deg, rgba(123,211,137,0.18), rgba(123,211,137,0.08));
       display:flex;
       align-items:center;
@@ -96,11 +99,32 @@
       font-weight:700;
       color:var(--accent);
       font-family: var(--mono);
-      font-size:18px;
+      font-size:20px;
       border:1px solid rgba(255,255,255,0.03);
-      box-shadow: 0 4px 14px rgba(11,61,46,0.35);
+      box-shadow: 0 6px 20px rgba(11,61,46,0.35);
       flex-shrink:0;
       overflow:hidden;
+      cursor:pointer;
+    }
+
+    .logo img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      border-radius:12px;
+      display:block;
+    }
+
+    #logo-fallback{
+      display:none;
+      align-items:center;
+      justify-content:center;
+      width:100%;
+      height:100%;
+      font-family:var(--mono);
+      color:var(--accent);
+      font-size:20px;
+      letter-spacing:0.6px;
     }
 
     .title-block h1{
@@ -114,6 +138,7 @@
       margin:0;
       color:var(--muted);
       font-size:13px;
+      min-height:18px;
     }
 
     .nav{
@@ -159,7 +184,6 @@
       min-height:0;
     }
 
-    /* Panels container uses grid so panels stack and keep height */
     .panels{
       position:relative;
       display:grid;
@@ -196,7 +220,7 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      font-size:48px;
+      font-size:56px;
       font-weight:700;
       color: #eafaf0;
       letter-spacing:1px;
@@ -212,15 +236,20 @@
     hr{ border:0; height:1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent); margin:18px 0; }
 
     footer{ padding:16px 22px; border-top:1px solid rgba(255,255,255,0.02); background: linear-gradient(180deg, transparent, rgba(255,255,255,0.01)); display:flex; justify-content:space-between; align-items:center; gap:12px; flex-shrink:0; }
-    footer .small{ color:var(--muted); font-size:13px; }
+    footer .small{ color:var(--muted); font-size:13px; min-height:18px; }
 
-    @media (max-width:720px){
-      .card{ height:86vh; border-radius:12px; }
-      header{ padding:12px; }
-      .content{ padding:12px; }
-      .logo{ width:48px; height:48px; font-size:16px; }
-      .nav button{ padding:8px 10px; font-size:12px; }
-      .home-center{ font-size:36px; }
+    @media (max-width:980px){
+      .card{ width:90vw; height:82vh; min-width:0; min-height:0; }
+      .home-center{ font-size:40px; }
+      .logo{ width:72px; height:72px; }
+    }
+
+    @media (max-width:520px){
+      header{ flex-direction:column; align-items:flex-start; gap:12px; }
+      .nav{ width:100%; justify-content:flex-start; }
+      .card{ width:96vw; height:86vh; }
+      .logo{ width:64px; height:64px; }
+      .home-center{ font-size:32px; }
     }
   </style>
 </head>
@@ -229,17 +258,18 @@
     <article class="card" role="article" aria-labelledby="policy-title">
       <div style="display:flex;flex-direction:column;width:100%;height:100%;">
         <header>
-          <div class="header-left" style="gap:14px;">
-            <div class="logo" aria-hidden="true" style="padding:0;overflow:hidden;">
-              <!-- optional icon; keep HTTPS to avoid mixed-content blocking -->
-              <img src="https://media.discordapp.net/attachments/857448871487602698/1448806414859501688/image.png"
-                   alt="Server Icon"
-                   style="width:100%;height:100%;object-fit:cover;border-radius:10px;">
+          <div class="header-left" style="gap:12px;">
+            <div id="logo" class="logo" title="Go to homepage" role="link" tabindex="0">
+              <img id="logo-img"
+                   src="https://cdn.discordapp.com/attachments/857448871487602698/1448806414859501688/image.png?ex=6a653b1e&is=6a63e99e&hm=12688e66c298da029f5309d24a7e6c8ac093e42a1647d8f6c022bb4305774dee&"
+                   alt="KOG logo"
+                   onerror="this.style.display='none';document.getElementById('logo-fallback').style.display='flex'">
+              <div id="logo-fallback" aria-hidden="true">KOG</div>
             </div>
 
             <div class="title-block">
-              <h1 id="policy-title">Privacy Policy - KOG (Kleiner Oil Group)</h1>
-              <p class="muted">Last Updated: <strong>25/07/2026 GMT</strong></p>
+              <h1 id="header-title">Kleiner Oil Group</h1>
+              <p class="muted" id="header-sub"></p>
             </div>
           </div>
 
@@ -265,7 +295,6 @@
 
             <!-- PRIVACY POLICY PANEL (UNCHANGED CONTENT) -->
             <section id="panel-policy" class="panel" role="region" aria-labelledby="policy-title">
-              <!-- PRIVACY POLICY CONTENT START (verbatim) -->
               <div>
                 <div class="toc" aria-hidden="false" style="margin-top:8px;">
                   <a href="#introduction" style="color:var(--accent);text-decoration:none;padding:6px 10px;border-radius:8px;border:1px solid rgba(123,211,137,0.03);background:rgba(123,211,137,0.04);font-size:13px;">Introduction</a>
@@ -409,7 +438,7 @@
                     <a href="mailto:sheepatkog546@gmail.com" style="color:var(--accent);text-decoration:underline;">sheepatkog546@gmail.com</a>
                   </li>
 
-                  <li><strong>Kleiner Internal Affairs Department (KIAD):strong>
+                  <li><strong>Kleiner Internal Affairs Department (KIAD):</strong>
                     <a href="https://discord.gg/HnsdgAGGMX" style="color:var(--accent);text-decoration:underline;" target="_blank">https://discord.gg/HnsdgAGGMX</a>
                   </li>
                 </ul>
@@ -422,14 +451,13 @@
 
                 <div style="height:18px;"></div>
               </div>
-              <!-- PRIVACY POLICY CONTENT END -->
             </section>
 
           </div>
 
           <footer>
             <div class="small">KOG - Kleiner Oil Group</div>
-            <div class="small">Last Updated: <strong>25/07/2026</strong></div>
+            <div class="small" id="footer-sub"></div>
           </footer>
         </div>
       </div>
@@ -438,7 +466,10 @@
 
   <script>
     (function(){
-      // Defensive DOM lookups
+      // Single source of truth for the privacy policy last updated value
+      const PRIVACY_LAST_UPDATED = '25/07/2026 GMT';
+
+      // DOM references
       const navHome = document.getElementById('nav-home');
       const navStatus = document.getElementById('nav-status');
       const navPolicy = document.getElementById('nav-policy');
@@ -447,8 +478,13 @@
       const panelStatus = document.getElementById('panel-status');
       const panelPolicy = document.getElementById('panel-policy');
 
-      if (!navHome || !navStatus || !navPolicy || !panelHome || !panelStatus || !panelPolicy) {
-        console.error('Required navigation or panels are missing. Check that the HTML is intact.');
+      const headerTitle = document.getElementById('header-title');
+      const headerSub = document.getElementById('header-sub');
+      const footerSub = document.getElementById('footer-sub');
+      const logoWrap = document.getElementById('logo');
+
+      if (!navHome || !navStatus || !navPolicy || !panelHome || !panelStatus || !panelPolicy || !headerTitle || !headerSub || !footerSub) {
+        console.error('Required DOM elements missing.');
         return;
       }
 
@@ -459,13 +495,21 @@
         'nav-policy': panelPolicy
       };
 
-      function setActive(buttonId){
+      const routeMap = {
+        'nav-home': { hash: '#home', title: 'Kleiner Oil Group', docTitle: 'Kleiner Oil Group' },
+        'nav-status': { hash: '#status', title: 'Kleiner Oil Group', docTitle: 'Kleiner Oil Group' },
+        'nav-policy': { hash: '#privacy', title: 'Privacy Policy - KOG (Kleiner Oil Group)', docTitle: 'Privacy Policy - KOG (Kleiner Oil Group)' }
+      };
+
+      function setActive(buttonId, pushHistory = true){
+        // update buttons
         buttons.forEach(btn => {
           const active = btn.id === buttonId;
           btn.classList.toggle('active', active);
           btn.setAttribute('aria-selected', active ? 'true' : 'false');
         });
 
+        // update panels
         Object.keys(panels).forEach(key => {
           const p = panels[key];
           if (key === buttonId) {
@@ -477,12 +521,37 @@
             p.removeAttribute('tabindex');
           }
         });
+
+        // update header title, document title, and privacy-only last-updated fields
+        const route = routeMap[buttonId];
+        if (route) {
+          headerTitle.textContent = route.title;
+          document.title = route.docTitle;
+
+          if (buttonId === 'nav-policy') {
+            // show last updated only on privacy policy
+            headerSub.innerHTML = `Last Updated: <strong>${PRIVACY_LAST_UPDATED}</strong>`;
+            footerSub.innerHTML = `Last Updated: <strong>${PRIVACY_LAST_UPDATED}</strong>`;
+          } else {
+            // hide last updated elsewhere
+            headerSub.textContent = '';
+            footerSub.textContent = '';
+          }
+
+          if (pushHistory) history.replaceState(null, '', route.hash);
+        }
       }
 
+      // click handlers
       navHome.addEventListener('click', () => setActive('nav-home'));
       navStatus.addEventListener('click', () => setActive('nav-status'));
       navPolicy.addEventListener('click', () => setActive('nav-policy'));
 
+      // logo click: go home
+      logoWrap.addEventListener('click', () => setActive('nav-home'));
+      logoWrap.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActive('nav-home'); } });
+
+      // keyboard navigation (left/right)
       document.addEventListener('keydown', (e) => {
         const activeIndex = buttons.findIndex(b => b.classList.contains('active'));
         if (e.key === 'ArrowRight') {
@@ -494,8 +563,27 @@
         }
       });
 
-      // initial state
-      setActive('nav-home');
+      // routing helpers
+      function routeFromHash(hash) {
+        if (!hash) return 'nav-home';
+        if (hash === '#home') return 'nav-home';
+        if (hash === '#status') return 'nav-status';
+        if (hash === '#privacy' || hash === '#policy') return 'nav-policy';
+        if (hash.startsWith('#introduction') || hash.startsWith('#who-we-are') || hash.startsWith('#legal-basis') || hash.startsWith('#information-we-collect') || hash.startsWith('#data-requests')) {
+          return 'nav-policy';
+        }
+        return 'nav-home';
+      }
+
+      // initial activation based on location.hash
+      const initial = routeFromHash(location.hash);
+      setActive(initial, false);
+
+      // respond to hash changes (back/forward)
+      window.addEventListener('hashchange', () => {
+        const r = routeFromHash(location.hash);
+        setActive(r, false);
+      });
     })();
   </script>
 </body>
