@@ -19,6 +19,7 @@
       --ui: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
       --transition-fast: 220ms cubic-bezier(.2,.9,.2,1);
       --transition-slow: 420ms cubic-bezier(.2,.9,.2,1);
+      --stat-bg: rgba(123,211,137,0.04);
     }
 
     html,body{
@@ -42,7 +43,6 @@
       box-sizing:border-box;
     }
 
-    /* Card scaled to cover roughly 75% of viewport width and height */
     .card{
       width:75vw;
       max-width:1200px;
@@ -87,7 +87,6 @@
       gap:16px;
     }
 
-    /* Larger logo in top-left of the box */
     .logo{
       width:96px;
       height:96px;
@@ -215,33 +214,196 @@
       pointer-events:auto;
     }
 
-    .home-center{
-      height:100%;
+    /* Homepage content - centralized */
+    .home-wrap{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      max-width:900px;
+      margin:0 auto;
+      align-items:center;
+      text-align:center;
+    }
+
+    /* circular logo above title */
+    .home-logo-circle{
+      width:120px;
+      height:120px;
+      border-radius:999px;
+      overflow:hidden;
       display:flex;
       align-items:center;
       justify-content:center;
-      font-size:56px;
+      background: linear-gradient(135deg, rgba(123,211,137,0.12), rgba(123,211,137,0.04));
+      border: 2px solid rgba(123,211,137,0.12);
+      box-shadow: 0 10px 30px rgba(2,8,6,0.25);
+    }
+
+    .home-logo-circle img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+      border-radius:999px;
+    }
+
+    .home-est{
+      font-size:12px;
+      color:var(--muted);
+      margin-top:6px;
+    }
+
+    .home-title{
+      font-size:32px;
+      font-weight:800;
+      color:#eafaf0;
+      letter-spacing:0.6px;
+      margin-top:6px;
+    }
+
+    .home-sub{
+      color:#dff7e8;
+      font-size:15px;
+      line-height:1.45;
+      max-width:78ch;
+    }
+
+    .links-inline{
+      color:var(--muted);
+      font-size:14px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .links-inline a{
+      color:var(--accent);
+      text-decoration:underline;
+    }
+
+    /* More noticeable line break */
+    .through-line{
+      height:6px;
+      border:0;
+      border-radius:6px;
+      background: linear-gradient(90deg, rgba(123,211,137,0.06), rgba(123,211,137,0.18), rgba(123,211,137,0.06));
+      margin:8px 0 18px 0;
+      width:100%;
+      max-width:760px;
+      box-shadow: 0 6px 18px rgba(11,61,46,0.12), inset 0 -2px 0 rgba(255,255,255,0.02);
+    }
+
+    /* Statistics - two main cards */
+    .stats{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap:12px;
+      margin-top:12px;
+      width:100%;
+      max-width:640px;
+    }
+
+    .stat-card{
+      background: var(--stat-bg);
+      border:1px solid rgba(255,255,255,0.02);
+      padding:18px;
+      border-radius:12px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      min-height:96px;
+      justify-content:center;
+      align-items:center;
+      box-shadow: 0 8px 20px rgba(2,8,6,0.12);
+      position:relative;
+    }
+
+    .stat-value{
+      font-size:28px;
+      font-weight:900;
+      color:#eafaf0;
+      font-family: var(--mono);
+      letter-spacing:0.6px;
+    }
+
+    .stat-label{
+      font-size:13px;
+      color:var(--muted);
+      margin-top:6px;
+    }
+
+    /* Fancy breakdown block */
+    .stat-break{
+      margin-top:18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+      border-radius:12px;
+      padding:14px;
+      border: 1px solid rgba(123,211,137,0.06);
+      box-shadow: 0 8px 20px rgba(2,8,6,0.35);
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+      align-items:center;
+      width:100%;
+      max-width:760px;
+      position:relative;
+      overflow:visible;
+    }
+
+    .stat-break .label{
+      color:var(--muted);
+      font-size:14px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:6px 0;
+    }
+
+    .stat-break .value{
+      font-weight:800;
+      color:#eafaf0;
+      font-size:16px;
+      text-align:right;
+      font-family: var(--mono);
+      letter-spacing:0.4px;
+    }
+
+    .badge {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:28px;
+      height:28px;
+      border-radius:8px;
+      background: rgba(123,211,137,0.12);
+      color: #062b20;
       font-weight:700;
-      color: #eafaf0;
-      letter-spacing:1px;
+      font-size:12px;
+      padding:4px 6px;
+      box-shadow: inset 0 -2px 0 rgba(0,0,0,0.06);
+    }
+
+    .home-center{
+      display:none;
     }
 
     h2{ margin-top:18px; margin-bottom:8px; font-size:16px; color:#f1fff6; }
-    h3{ margin:16px 0 8px 0; font-size:14px; color:#e8fff2; }
     p, li{ color: #dff7e8; font-size:14px; margin:8px 0; }
-    ul{ margin:8px 0 12px 20px; padding:0; }
-    code.inline{ background: rgba(255,255,255,0.03); padding:2px 6px; border-radius:6px; font-family: var(--mono); font-size:13px; color:#bff0c9; }
     .muted{ color:var(--muted); font-size:13px; }
     .note{ margin:12px 0; padding:12px 14px; background: linear-gradient(180deg, rgba(123,211,137,0.02), rgba(255,255,255,0.01)); border-radius:10px; border:1px solid rgba(255,255,255,0.02); color:#e9f7ef; font-size:13px; }
-    hr{ border:0; height:1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent); margin:18px 0; }
 
     footer{ padding:16px 22px; border-top:1px solid rgba(255,255,255,0.02); background: linear-gradient(180deg, transparent, rgba(255,255,255,0.01)); display:flex; justify-content:space-between; align-items:center; gap:12px; flex-shrink:0; }
     footer .small{ color:var(--muted); font-size:13px; min-height:18px; }
 
     @media (max-width:980px){
       .card{ width:90vw; height:82vh; min-width:0; min-height:0; }
-      .home-center{ font-size:40px; }
+      .home-title{ font-size:28px; }
+      .stats{ grid-template-columns: repeat(2, 1fr); max-width:520px; }
       .logo{ width:72px; height:72px; }
+      .stat-break{ grid-template-columns: 1fr; }
+      .stat-break .value{ text-align:left; }
+      .home-logo-circle{ width:96px; height:96px; }
     }
 
     @media (max-width:520px){
@@ -249,7 +411,11 @@
       .nav{ width:100%; justify-content:flex-start; }
       .card{ width:96vw; height:86vh; }
       .logo{ width:64px; height:64px; }
-      .home-center{ font-size:32px; }
+      .home-title{ font-size:22px; }
+      .stats{ grid-template-columns: 1fr; }
+      .stat-break{ grid-template-columns: 1fr; }
+      .stat-break .value{ text-align:left; }
+      .home-logo-circle{ width:80px; height:80px; }
     }
   </style>
 </head>
@@ -285,15 +451,69 @@
 
             <!-- HOME PANEL -->
             <section id="panel-home" class="panel active" role="region" aria-labelledby="nav-home">
-              <div class="home-center" aria-hidden="false">yes</div>
+              <div class="home-wrap" aria-live="polite">
+                <div class="home-logo-circle" aria-hidden="false">
+                  <img src="https://cdn.discordapp.com/attachments/857448871487602698/1448806414859501688/image.png?ex=6a653b1e&is=6a63e99e&hm=12688e66c298da029f5309d24a7e6c8ac093e42a1647d8f6c022bb4305774dee&" alt="KOG logo circle">
+                </div>
+                <div class="home-est">est April 2025</div>
+
+                <div class="home-title">KOG BOT</div>
+
+                <div class="home-sub">
+                  <strong>KOG Bot</strong> is KOG's official bot maintained by <strong>Sheepboi546</strong> and is designed to make KOG's life easier. From helping with moderation to event logging and Roblox Studio integration.
+                </div>
+
+                <div class="links-inline">
+                  <span>You can find the status page for KOG Bot <a href="#status" id="link-status">here</a>, and the Privacy Policy <a href="#privacy" id="link-privacy">here</a>.</span>
+                </div>
+
+                <div class="through-line" role="separator" aria-hidden="true"></div>
+
+                <h2>OVERALL KOG Statistics [INCOMPLETE] </h2>
+
+                <div class="stats" aria-hidden="false" id="overall-stats">
+                  <div class="stat-card" title="Discord Members">
+                    <div class="stat-value" id="stat-discord-members">0</div>
+                    <div class="stat-label">Discord Members</div>
+                  </div>
+
+                  <div class="stat-card" title="Roblox Members">
+                    <div class="stat-value" id="stat-roblox-members">0</div>
+                    <div class="stat-label">Roblox Members</div>
+                  </div>
+                </div>
+
+                <!-- Fancy breakdown -->
+                <div class="stat-break" aria-hidden="false" id="fancy-breakdown" role="group" aria-label="Detailed statistics">
+                  <div>
+                    <div class="label"><span class="badge">E</span> Total Events Attended:</div>
+                    <div class="label" style="margin-top:8px;"><span class="badge">M</span> Total Merits:</div>
+                    <div class="label" style="margin-top:8px;"><span class="badge">H</span> Total Events Hosted:</div>
+                    <div class="label" style="margin-top:8px;"><span class="badge">L</span> Total Moderation Logs:</div>
+                    <div class="label" style="margin-top:8px;"><span class="badge">D</span> Total Data Stored:</div>
+                    <div class="label" style="margin-top:8px;"><span class="badge">K</span> Total Data Stored (KB):</div>
+                  </div>
+
+                  <div>
+                    <div class="value" id="total-events-attended">0</div>
+                    <div class="value" id="total-merits" style="margin-top:8px;">0</div>
+                    <div class="value" id="total-events-hosted" style="margin-top:8px;">0</div>
+                    <div class="value" id="total-moderation-logs" style="margin-top:8px;">0</div>
+                    <div class="value" id="total-data-stored" style="margin-top:8px;">0 KB</div>
+                    <div class="value" id="total-data-stored-kb" style="margin-top:8px;">0</div>
+                  </div>
+                </div>
+
+              </div>
             </section>
 
-            <!-- STATUS PANEL (empty for now) -->
+            <!-- STATUS PANEL -->
             <section id="panel-status" class="panel" role="region" aria-labelledby="nav-status">
-              <!-- intentionally empty -->
+              <h2>Status</h2>
+              <p class="muted">Current KOG Bot status and uptime will appear here.</p>
             </section>
 
-            <!-- PRIVACY POLICY PANEL (UNCHANGED CONTENT) -->
+            <!-- PRIVACY POLICY PANEL (FULL) -->
             <section id="panel-policy" class="panel" role="region" aria-labelledby="policy-title">
               <div>
                 <div class="toc" aria-hidden="false" style="margin-top:8px;">
@@ -447,7 +667,7 @@
                 <hr />
 
                 <h2 id="changes">13. Changes to This Policy</h2>
-                <p>We reserve the right to update this policy at any time. Updates will be indicated by the "Last Updated" date at the top of this document. Continued interaction with the bot or community constitutes acceptance of the updated policy.</p>
+                <p>We reserve the right to update this policy at any time. Updates will be indicated by the "Last Updated" date at the top of this document. Continued interaction with the bot or community constitutes acceptance of the updated policy. - Created by Sinsoxia, maintained by Sheepboi546.</p>
 
                 <div style="height:18px;"></div>
               </div>
@@ -483,7 +703,19 @@
       const footerSub = document.getElementById('footer-sub');
       const logoWrap = document.getElementById('logo');
 
-      if (!navHome || !navStatus || !navPolicy || !panelHome || !panelStatus || !panelPolicy || !headerTitle || !headerSub || !footerSub) {
+      // Homepage elements
+      const statDiscordMembers = document.getElementById('stat-discord-members');
+      const statRobloxMembers = document.getElementById('stat-roblox-members');
+
+      // Fancy breakdown elements
+      const totalEventsAttendedEl = document.getElementById('total-events-attended');
+      const totalMeritsEl = document.getElementById('total-merits');
+      const totalEventsHostedEl = document.getElementById('total-events-hosted');
+      const totalModerationLogsEl = document.getElementById('total-moderation-logs');
+      const totalDataStoredEl = document.getElementById('total-data-stored');
+      const totalDataStoredKBEl = document.getElementById('total-data-stored-kb');
+
+      if (!navHome || !navStatus || !navPolicy || !panelHome || !panelStatus || !panelPolicy || !headerTitle) {
         console.error('Required DOM elements missing.');
         return;
       }
@@ -563,7 +795,7 @@
         }
       });
 
-      // routing helpers
+      // On load: read hash and set panel accordingly
       function routeFromHash(hash) {
         if (!hash) return 'nav-home';
         if (hash === '#home') return 'nav-home';
@@ -584,6 +816,33 @@
         const r = routeFromHash(location.hash);
         setActive(r, false);
       });
+
+      // Keep all stats at 0 for now (aligned, monospace)
+      function setInitialZeros() {
+        statDiscordMembers.textContent = '0';
+        statRobloxMembers.textContent = '0';
+        totalEventsAttendedEl.textContent = '0';
+        totalMeritsEl.textContent = '0';
+        totalEventsHostedEl.textContent = '0';
+        totalModerationLogsEl.textContent = '0';
+        totalDataStoredEl.textContent = '0 KB';
+        totalDataStoredKBEl.textContent = '0';
+      }
+
+      setInitialZeros();
+
+      // Expose a helper so server-driven data can update stats later
+      window.updateOverallStats = function(stats = {}) {
+        if (stats.discordMembers !== undefined) statDiscordMembers.textContent = stats.discordMembers;
+        if (stats.robloxMembers !== undefined) statRobloxMembers.textContent = stats.robloxMembers;
+
+        if (stats.totalEventsAttended !== undefined) totalEventsAttendedEl.textContent = stats.totalEventsAttended;
+        if (stats.totalMerits !== undefined) totalMeritsEl.textContent = stats.totalMerits;
+        if (stats.totalEventsHosted !== undefined) totalEventsHostedEl.textContent = stats.totalEventsHosted;
+        if (stats.totalModerationLogs !== undefined) totalModerationLogsEl.textContent = stats.totalModerationLogs;
+        if (stats.totalDataStored !== undefined) totalDataStoredEl.textContent = stats.totalDataStored;
+        if (stats.totalDataStoredKB !== undefined) totalDataStoredKBEl.textContent = stats.totalDataStoredKB;
+      };
     })();
   </script>
 </body>
