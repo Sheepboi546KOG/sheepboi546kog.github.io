@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>KOG (Kleiner Oil Group) - Privacy Policy / Home</title>
+  <title>KOG (Kleiner Oil Group) - Home / Status / Privacy Policy</title>
   <meta name="description" content="Privacy Policy for KOG (Kleiner Oil Group) - KOG Bot and KOG-managed communities." />
   <style>
     :root{
@@ -34,7 +34,6 @@
       line-height:1.5;
     }
 
-    /* Page layout */
     .wrap{
       min-height:100vh;
       display:flex;
@@ -44,7 +43,6 @@
       box-sizing:border-box;
     }
 
-    /* Center card */
     .card{
       width:100%;
       max-width:var(--max-width);
@@ -58,7 +56,6 @@
       position:relative;
     }
 
-    /* Left accent bar */
     .card::before{
       content:"";
       position:absolute;
@@ -71,7 +68,6 @@
       border-bottom-left-radius:var(--radius);
     }
 
-    /* Header area */
     header{
       padding:18px 20px;
       border-bottom:1px solid rgba(255,255,255,0.02);
@@ -120,7 +116,6 @@
       font-size:13px;
     }
 
-    /* Top-right nav */
     .nav{
       display:flex;
       gap:10px;
@@ -153,7 +148,6 @@
       box-shadow: 0 6px 18px rgba(11,61,46,0.18);
     }
 
-    /* Content area with panels */
     .content{
       padding:22px 28px;
       overflow:hidden;
@@ -162,18 +156,24 @@
       position:relative;
       display:flex;
       flex-direction:column;
+      min-height:0;
     }
 
+    /* Panels container uses grid so panels stack and keep height */
     .panels{
       position:relative;
+      display:grid;
+      grid-template-rows: 1fr;
+      grid-template-columns: 1fr;
+      gap:0;
       flex:1 1 auto;
       min-height:0;
       overflow:hidden;
     }
 
     .panel{
-      position:absolute;
-      inset:0;
+      grid-row:1;
+      grid-column:1;
       padding:18px 22px;
       box-sizing:border-box;
       overflow:auto;
@@ -182,6 +182,7 @@
       transition: opacity var(--transition-slow), transform var(--transition-slow);
       pointer-events:none;
       will-change: opacity, transform;
+      background: transparent;
     }
 
     .panel.active{
@@ -190,7 +191,6 @@
       pointer-events:auto;
     }
 
-    /* Homepage center */
     .home-center{
       height:100%;
       display:flex;
@@ -202,80 +202,18 @@
       letter-spacing:1px;
     }
 
-    /* Make headings stand out */
-    h2{
-      margin-top:18px;
-      margin-bottom:8px;
-      font-size:16px;
-      color:#f1fff6;
-    }
+    h2{ margin-top:18px; margin-bottom:8px; font-size:16px; color:#f1fff6; }
+    h3{ margin:16px 0 8px 0; font-size:14px; color:#e8fff2; }
+    p, li{ color: #dff7e8; font-size:14px; margin:8px 0; }
+    ul{ margin:8px 0 12px 20px; padding:0; }
+    code.inline{ background: rgba(255,255,255,0.03); padding:2px 6px; border-radius:6px; font-family: var(--mono); font-size:13px; color:#bff0c9; }
+    .muted{ color:var(--muted); font-size:13px; }
+    .note{ margin:12px 0; padding:12px 14px; background: linear-gradient(180deg, rgba(123,211,137,0.02), rgba(255,255,255,0.01)); border-radius:10px; border:1px solid rgba(255,255,255,0.02); color:#e9f7ef; font-size:13px; }
+    hr{ border:0; height:1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent); margin:18px 0; }
 
-    h3{
-      margin:16px 0 8px 0;
-      font-size:14px;
-      color:#e8fff2;
-    }
+    footer{ padding:16px 22px; border-top:1px solid rgba(255,255,255,0.02); background: linear-gradient(180deg, transparent, rgba(255,255,255,0.01)); display:flex; justify-content:space-between; align-items:center; gap:12px; flex-shrink:0; }
+    footer .small{ color:var(--muted); font-size:13px; }
 
-    p, li{
-      color: #dff7e8;
-      font-size:14px;
-      margin:8px 0;
-    }
-
-    ul{
-      margin:8px 0 12px 20px;
-      padding:0;
-    }
-
-    code.inline{
-      background: rgba(255,255,255,0.03);
-      padding:2px 6px;
-      border-radius:6px;
-      font-family: var(--mono);
-      font-size:13px;
-      color:#bff0c9;
-    }
-
-    .muted{
-      color:var(--muted);
-      font-size:13px;
-    }
-
-    .note{
-      margin:12px 0;
-      padding:12px 14px;
-      background: linear-gradient(180deg, rgba(123,211,137,0.02), rgba(255,255,255,0.01));
-      border-radius:10px;
-      border:1px solid rgba(255,255,255,0.02);
-      color:#e9f7ef;
-      font-size:13px;
-    }
-
-    hr{
-      border:0;
-      height:1px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
-      margin:18px 0;
-    }
-
-    /* Footer */
-    footer{
-      padding:16px 22px;
-      border-top:1px solid rgba(255,255,255,0.02);
-      background: linear-gradient(180deg, transparent, rgba(255,255,255,0.01));
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      flex-shrink:0;
-    }
-
-    footer .small{
-      color:var(--muted);
-      font-size:13px;
-    }
-
-    /* Responsive */
     @media (max-width:720px){
       .card{ height:86vh; border-radius:12px; }
       header{ padding:12px; }
@@ -293,7 +231,8 @@
         <header>
           <div class="header-left" style="gap:14px;">
             <div class="logo" aria-hidden="true" style="padding:0;overflow:hidden;">
-              <img src="https://media.discordapp.net/attachments/857448871487602698/1448806414859501688/image.png?ex=6a653b1e&is=6a63e99e&hm=12688e66c298da029f5309d24a7e6c8ac093e42a1647d8f6c022bb4305774dee&=&format=webp&quality=lossless&width=648&height=648"
+              <!-- optional icon; keep HTTPS to avoid mixed-content blocking -->
+              <img src="https://media.discordapp.net/attachments/857448871487602698/1448806414859501688/image.png"
                    alt="Server Icon"
                    style="width:100%;height:100%;object-fit:cover;border-radius:10px;">
             </div>
@@ -321,12 +260,12 @@
 
             <!-- STATUS PANEL (empty for now) -->
             <section id="panel-status" class="panel" role="region" aria-labelledby="nav-status">
-              <!-- Intentionally left blank for future content -->
+              <!-- intentionally empty -->
             </section>
 
             <!-- PRIVACY POLICY PANEL (UNCHANGED CONTENT) -->
             <section id="panel-policy" class="panel" role="region" aria-labelledby="policy-title">
-              <!-- The entire privacy policy content is included here exactly as provided -->
+              <!-- PRIVACY POLICY CONTENT START (verbatim) -->
               <div>
                 <div class="toc" aria-hidden="false" style="margin-top:8px;">
                   <a href="#introduction" style="color:var(--accent);text-decoration:none;padding:6px 10px;border-radius:8px;border:1px solid rgba(123,211,137,0.03);background:rgba(123,211,137,0.04);font-size:13px;">Introduction</a>
@@ -470,7 +409,7 @@
                     <a href="mailto:sheepatkog546@gmail.com" style="color:var(--accent);text-decoration:underline;">sheepatkog546@gmail.com</a>
                   </li>
 
-                  <li><strong>Kleiner Internal Affairs Department (KIAD):</strong>
+                  <li><strong>Kleiner Internal Affairs Department (KIAD):strong>
                     <a href="https://discord.gg/HnsdgAGGMX" style="color:var(--accent);text-decoration:underline;" target="_blank">https://discord.gg/HnsdgAGGMX</a>
                   </li>
                 </ul>
@@ -483,6 +422,7 @@
 
                 <div style="height:18px;"></div>
               </div>
+              <!-- PRIVACY POLICY CONTENT END -->
             </section>
 
           </div>
@@ -498,6 +438,7 @@
 
   <script>
     (function(){
+      // Defensive DOM lookups
       const navHome = document.getElementById('nav-home');
       const navStatus = document.getElementById('nav-status');
       const navPolicy = document.getElementById('nav-policy');
@@ -505,6 +446,11 @@
       const panelHome = document.getElementById('panel-home');
       const panelStatus = document.getElementById('panel-status');
       const panelPolicy = document.getElementById('panel-policy');
+
+      if (!navHome || !navStatus || !navPolicy || !panelHome || !panelStatus || !panelPolicy) {
+        console.error('Required navigation or panels are missing. Check that the HTML is intact.');
+        return;
+      }
 
       const buttons = [navHome, navStatus, navPolicy];
       const panels = {
@@ -514,31 +460,29 @@
       };
 
       function setActive(buttonId){
-        // update buttons
         buttons.forEach(btn => {
           const active = btn.id === buttonId;
           btn.classList.toggle('active', active);
           btn.setAttribute('aria-selected', active ? 'true' : 'false');
         });
 
-        // animate panels: remove active then add to target after small delay for smoothness
-        Object.values(panels).forEach(p => p.classList.remove('active'));
-        const target = panels[buttonId];
-        // small timeout to ensure transition plays consistently
-        requestAnimationFrame(() => {
-          target.classList.add('active');
-          // focus the panel for keyboard users
-          target.setAttribute('tabindex', '-1');
-          target.focus({preventScroll:true});
+        Object.keys(panels).forEach(key => {
+          const p = panels[key];
+          if (key === buttonId) {
+            p.classList.add('active');
+            p.setAttribute('tabindex', '-1');
+            setTimeout(() => { try { p.focus({preventScroll:true}); } catch(e){} }, 50);
+          } else {
+            p.classList.remove('active');
+            p.removeAttribute('tabindex');
+          }
         });
       }
 
-      // attach events
       navHome.addEventListener('click', () => setActive('nav-home'));
       navStatus.addEventListener('click', () => setActive('nav-status'));
       navPolicy.addEventListener('click', () => setActive('nav-policy'));
 
-      // keyboard navigation (left/right)
       document.addEventListener('keydown', (e) => {
         const activeIndex = buttons.findIndex(b => b.classList.contains('active'));
         if (e.key === 'ArrowRight') {
@@ -550,7 +494,7 @@
         }
       });
 
-      // preserve initial state (homepage active)
+      // initial state
       setActive('nav-home');
     })();
   </script>
