@@ -1,0 +1,849 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Kleiner Oil Group</title>
+  <meta name="description" content="Kleiner Oil Group site: Home, Status, Privacy Policy" />
+  <style>
+    :root{
+      --bg-1: #062b20;
+      --bg-2: #0b3d2e;
+      --card-bg: rgba(255,255,255,0.03);
+      --card-accent: rgba(255,255,255,0.04);
+      --muted: rgba(255,255,255,0.75);
+      --accent: #7bd389;
+      --glass-border: rgba(255,255,255,0.06);
+      --radius: 14px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Segoe UI Mono", monospace;
+      --ui: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      --transition-fast: 220ms cubic-bezier(.2,.9,.2,1);
+      --transition-slow: 420ms cubic-bezier(.2,.9,.2,1);
+      --stat-bg: rgba(123,211,137,0.04);
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: var(--ui);
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(123,211,137,0.06), transparent 8%),
+                  linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 100%);
+      color: #e9f7ef;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.5;
+    }
+
+    .wrap{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:48px 20px;
+      box-sizing:border-box;
+    }
+
+    .card{
+      width:75vw;
+      max-width:1200px;
+      min-width:520px;
+      height:75vh;
+      min-height:520px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:var(--radius);
+      box-shadow: 0 10px 30px rgba(2,8,6,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      border: 1px solid var(--glass-border);
+      display:flex;
+      overflow:hidden;
+      position:relative;
+    }
+
+    .card::before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:0;
+      bottom:0;
+      width:8px;
+      background: linear-gradient(180deg, rgba(123,211,137,0.9), rgba(123,211,137,0.5));
+      border-top-left-radius:var(--radius);
+      border-bottom-left-radius:var(--radius);
+    }
+
+    header{
+      padding:18px 20px;
+      border-bottom:1px solid rgba(255,255,255,0.02);
+      display:flex;
+      align-items:center;
+      gap:16px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+      flex-shrink:0;
+      justify-content:space-between;
+    }
+
+    .header-left{
+      display:flex;
+      align-items:center;
+      gap:16px;
+    }
+
+    .logo{
+      width:96px;
+      height:96px;
+      border-radius:12px;
+      background: linear-gradient(135deg, rgba(123,211,137,0.18), rgba(123,211,137,0.08));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      color:var(--accent);
+      font-family: var(--mono);
+      font-size:20px;
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 6px 20px rgba(11,61,46,0.35);
+      flex-shrink:0;
+      overflow:hidden;
+      cursor:pointer;
+    }
+
+    .logo img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      border-radius:12px;
+      display:block;
+    }
+
+    #logo-fallback{
+      display:none;
+      align-items:center;
+      justify-content:center;
+      width:100%;
+      height:100%;
+      font-family:var(--mono);
+      color:var(--accent);
+      font-size:20px;
+      letter-spacing:0.6px;
+    }
+
+    .title-block h1{
+      margin:0;
+      font-size:18px;
+      letter-spacing:0.2px;
+      color:#eafaf0;
+    }
+
+    .title-block p{
+      margin:0;
+      color:var(--muted);
+      font-size:13px;
+      min-height:18px;
+    }
+
+    .nav{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+
+    .nav button{
+      background: transparent;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,0.02);
+      padding:8px 12px;
+      border-radius:10px;
+      cursor:pointer;
+      font-size:13px;
+      transition: all var(--transition-fast);
+      backdrop-filter: blur(4px);
+    }
+
+    .nav button:hover{
+      transform: translateY(-2px);
+      color: #eafaf0;
+      border-color: rgba(123,211,137,0.12);
+      box-shadow: 0 6px 18px rgba(11,61,46,0.18);
+    }
+
+    .nav button.active{
+      color: #062b20;
+      background: var(--accent);
+      border-color: rgba(123,211,137,0.18);
+      box-shadow: 0 6px 18px rgba(11,61,46,0.18);
+    }
+
+    .content{
+      padding:22px 28px;
+      overflow:hidden;
+      width:100%;
+      box-sizing:border-box;
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      min-height:0;
+    }
+
+    .panels{
+      position:relative;
+      display:grid;
+      grid-template-rows: 1fr;
+      grid-template-columns: 1fr;
+      gap:0;
+      flex:1 1 auto;
+      min-height:0;
+      overflow:hidden;
+    }
+
+    .panel{
+      grid-row:1;
+      grid-column:1;
+      padding:18px 22px;
+      box-sizing:border-box;
+      overflow:auto;
+      opacity:0;
+      transform: translateY(8px) scale(0.995);
+      transition: opacity var(--transition-slow), transform var(--transition-slow);
+      pointer-events:none;
+      will-change: opacity, transform;
+      background: transparent;
+    }
+
+    .panel.active{
+      opacity:1;
+      transform: translateY(0) scale(1);
+      pointer-events:auto;
+    }
+
+    /* Homepage content - centralized */
+    .home-wrap{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      max-width:900px;
+      margin:0 auto;
+      align-items:center;
+      text-align:center;
+    }
+
+    /* circular logo above title */
+    .home-logo-circle{
+      width:120px;
+      height:120px;
+      border-radius:999px;
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: linear-gradient(135deg, rgba(123,211,137,0.12), rgba(123,211,137,0.04));
+      border: 2px solid rgba(123,211,137,0.12);
+      box-shadow: 0 10px 30px rgba(2,8,6,0.25);
+    }
+
+    .home-logo-circle img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+      border-radius:999px;
+    }
+
+    .home-est{
+      font-size:12px;
+      color:var(--muted);
+      margin-top:6px;
+    }
+
+    .home-title{
+      font-size:32px;
+      font-weight:800;
+      color:#eafaf0;
+      letter-spacing:0.6px;
+      margin-top:6px;
+    }
+
+    .home-sub{
+      color:#dff7e8;
+      font-size:15px;
+      line-height:1.45;
+      max-width:78ch;
+    }
+
+    .links-inline{
+      color:var(--muted);
+      font-size:14px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .links-inline a{
+      color:var(--accent);
+      text-decoration:underline;
+    }
+
+    /* More noticeable line break */
+    .through-line{
+      height:6px;
+      border:0;
+      border-radius:6px;
+      background: linear-gradient(90deg, rgba(123,211,137,0.06), rgba(123,211,137,0.18), rgba(123,211,137,0.06));
+      margin:8px 0 18px 0;
+      width:100%;
+      max-width:760px;
+      box-shadow: 0 6px 18px rgba(11,61,46,0.12), inset 0 -2px 0 rgba(255,255,255,0.02);
+    }
+
+    /* Statistics - two main cards */
+    .stats{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap:12px;
+      margin-top:12px;
+      width:100%;
+      max-width:640px;
+    }
+
+    .stat-card{
+      background: var(--stat-bg);
+      border:1px solid rgba(255,255,255,0.02);
+      padding:18px;
+      border-radius:12px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      min-height:96px;
+      justify-content:center;
+      align-items:center;
+      box-shadow: 0 8px 20px rgba(2,8,6,0.12);
+      position:relative;
+    }
+
+    .stat-value{
+      font-size:28px;
+      font-weight:900;
+      color:#eafaf0;
+      font-family: var(--mono);
+      letter-spacing:0.6px;
+    }
+
+    .stat-label{
+      font-size:13px;
+      color:var(--muted);
+      margin-top:6px;
+    }
+
+    /* Fancy breakdown block */
+    .stat-break{
+      margin-top:18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+      border-radius:12px;
+      padding:14px;
+      border: 1px solid rgba(123,211,137,0.06);
+      box-shadow: 0 8px 20px rgba(2,8,6,0.35);
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+      align-items:center;
+      width:100%;
+      max-width:760px;
+      position:relative;
+      overflow:visible;
+    }
+
+    .stat-break .label{
+      color:var(--muted);
+      font-size:14px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:6px 0;
+    }
+
+    .stat-break .value{
+      font-weight:800;
+      color:#eafaf0;
+      font-size:16px;
+      text-align:right;
+      font-family: var(--mono);
+      letter-spacing:0.4px;
+    }
+
+    .badge {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:28px;
+      height:28px;
+      border-radius:8px;
+      background: rgba(123,211,137,0.12);
+      color: #062b20;
+      font-weight:700;
+      font-size:12px;
+      padding:4px 6px;
+      box-shadow: inset 0 -2px 0 rgba(0,0,0,0.06);
+    }
+
+    .home-center{
+      display:none;
+    }
+
+    h2{ margin-top:18px; margin-bottom:8px; font-size:16px; color:#f1fff6; }
+    p, li{ color: #dff7e8; font-size:14px; margin:8px 0; }
+    .muted{ color:var(--muted); font-size:13px; }
+    .note{ margin:12px 0; padding:12px 14px; background: linear-gradient(180deg, rgba(123,211,137,0.02), rgba(255,255,255,0.01)); border-radius:10px; border:1px solid rgba(255,255,255,0.02); color:#e9f7ef; font-size:13px; }
+
+    footer{ padding:16px 22px; border-top:1px solid rgba(255,255,255,0.02); background: linear-gradient(180deg, transparent, rgba(255,255,255,0.01)); display:flex; justify-content:space-between; align-items:center; gap:12px; flex-shrink:0; }
+    footer .small{ color:var(--muted); font-size:13px; min-height:18px; }
+
+    @media (max-width:980px){
+      .card{ width:90vw; height:82vh; min-width:0; min-height:0; }
+      .home-title{ font-size:28px; }
+      .stats{ grid-template-columns: repeat(2, 1fr); max-width:520px; }
+      .logo{ width:72px; height:72px; }
+      .stat-break{ grid-template-columns: 1fr; }
+      .stat-break .value{ text-align:left; }
+      .home-logo-circle{ width:96px; height:96px; }
+    }
+
+    @media (max-width:520px){
+      header{ flex-direction:column; align-items:flex-start; gap:12px; }
+      .nav{ width:100%; justify-content:flex-start; }
+      .card{ width:96vw; height:86vh; }
+      .logo{ width:64px; height:64px; }
+      .home-title{ font-size:22px; }
+      .stats{ grid-template-columns: 1fr; }
+      .stat-break{ grid-template-columns: 1fr; }
+      .stat-break .value{ text-align:left; }
+      .home-logo-circle{ width:80px; height:80px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <article class="card" role="article" aria-labelledby="policy-title">
+      <div style="display:flex;flex-direction:column;width:100%;height:100%;">
+        <header>
+          <div class="header-left" style="gap:12px;">
+            <div id="logo" class="logo" title="Go to homepage" role="link" tabindex="0">
+              <img id="logo-img"
+                   src="https://cdn.discordapp.com/attachments/857448871487602698/1448806414859501688/image.png?ex=6a653b1e&is=6a63e99e&hm=12688e66c298da029f5309d24a7e6c8ac093e42a1647d8f6c022bb4305774dee&"
+                   alt="KOG logo"
+                   onerror="this.style.display='none';document.getElementById('logo-fallback').style.display='flex'">
+              <div id="logo-fallback" aria-hidden="true">KOG</div>
+            </div>
+
+            <div class="title-block">
+              <h1 id="header-title">Kleiner Oil Group</h1>
+              <p class="muted" id="header-sub"></p>
+            </div>
+          </div>
+
+          <nav class="nav" role="navigation" aria-label="Main navigation">
+            <button id="nav-home" class="active" aria-controls="panel-home" aria-selected="true">Homepage</button>
+            <button id="nav-status" aria-controls="panel-status" aria-selected="false">Status</button>
+            <button id="nav-policy" aria-controls="panel-policy" aria-selected="false">Privacy Policy</button>
+          </nav>
+        </header>
+
+        <div class="content" tabindex="0">
+          <div class="panels" id="panels">
+
+            <!-- HOME PANEL -->
+            <section id="panel-home" class="panel active" role="region" aria-labelledby="nav-home">
+              <div class="home-wrap" aria-live="polite">
+                <div class="home-logo-circle" aria-hidden="false">
+                  <img src="https://cdn.discordapp.com/attachments/857448871487602698/1448806414859501688/image.png?ex=6a653b1e&is=6a63e99e&hm=12688e66c298da029f5309d24a7e6c8ac093e42a1647d8f6c022bb4305774dee&" alt="KOG logo circle">
+                </div>
+                <div class="home-est">est April 2025</div>
+
+                <div class="home-title">KOG BOT</div>
+
+                <div class="home-sub">
+                  <strong>KOG Bot</strong> is KOG's official bot maintained by <strong>Sheepboi546</strong> and is designed to make KOG's life easier. From helping with moderation to event logging and Roblox Studio integration.
+                </div>
+
+                <div class="links-inline">
+                  <span>You can find the status page for KOG Bot <a href="#status" id="link-status">here</a>, and the Privacy Policy <a href="#privacy" id="link-privacy">here</a>.</span>
+                </div>
+
+                <div class="through-line" role="separator" aria-hidden="true"></div>
+
+                <h2>OVERALL KOG Statistics [INCOMPLETE] </h2>
+
+                <div class="stats" aria-hidden="false" id="overall-stats">
+                  <div class="stat-card" title="Discord Members">
+                    <div class="stat-value" id="stat-discord-members">0</div>
+                    <div class="stat-label">Discord Members</div>
+                  </div>
+
+                  <div class="stat-card" title="Roblox Members">
+                    <div class="stat-value" id="stat-roblox-members">0</div>
+                    <div class="stat-label">Roblox Members</div>
+                  </div>
+                </div>
+
+                <!-- Fancy breakdown -->
+                <div class="stat-break" aria-hidden="false" id="fancy-breakdown" role="group" aria-label="Detailed statistics">
+                  <div>
+                    <div class="label"><span class="badge">E</span> Total Events Attended:</div>
+                    <div class="label" style="margin-top:8px;"><span class="badge">M</span> Total Merits:</div>
+                    <div class="label" style="margin-top:8px;"><span class="badge">H</span> Total Events Hosted:</div>
+                    <div class="label" style="margin-top:8px;"><span class="badge">L</span> Total Moderation Logs:</div>
+                    <div class="label" style="margin-top:8px;"><span class="badge">D</span> Total Data Stored:</div>
+                    <div class="label" style="margin-top:8px;"><span class="badge">K</span> Total Data Stored (KB):</div>
+                  </div>
+
+                  <div>
+                    <div class="value" id="total-events-attended">0</div>
+                    <div class="value" id="total-merits" style="margin-top:8px;">0</div>
+                    <div class="value" id="total-events-hosted" style="margin-top:8px;">0</div>
+                    <div class="value" id="total-moderation-logs" style="margin-top:8px;">0</div>
+                    <div class="value" id="total-data-stored" style="margin-top:8px;">0 KB</div>
+                    <div class="value" id="total-data-stored-kb" style="margin-top:8px;">0</div>
+                  </div>
+                </div>
+
+              </div>
+            </section>
+
+            <!-- STATUS PANEL -->
+            <section id="panel-status" class="panel" role="region" aria-labelledby="nav-status">
+              <h2>Status</h2>
+              <p class="muted">Current KOG Bot status and uptime will appear here.</p>
+            </section>
+
+            <!-- PRIVACY POLICY PANEL (FULL) -->
+            <section id="panel-policy" class="panel" role="region" aria-labelledby="policy-title">
+              <div>
+                <div class="toc" aria-hidden="false" style="margin-top:8px;">
+                  <a href="#introduction" style="color:var(--accent);text-decoration:none;padding:6px 10px;border-radius:8px;border:1px solid rgba(123,211,137,0.03);background:rgba(123,211,137,0.04);font-size:13px;">Introduction</a>
+                  <a href="#who-we-are" style="color:var(--accent);text-decoration:none;padding:6px 10px;border-radius:8px;border:1px solid rgba(123,211,137,0.03);background:rgba(123,211,137,0.04);font-size:13px;">Who We Are</a>
+                  <a href="#legal-basis" style="color:var(--accent);text-decoration:none;padding:6px 10px;border-radius:8px;border:1px solid rgba(123,211,137,0.03);background:rgba(123,211,137,0.04);font-size:13px;">Legal Basis</a>
+                  <a href="#information-we-collect" style="color:var(--accent);text-decoration:none;padding:6px 10px;border-radius:8px;border:1px solid rgba(123,211,137,0.03);background:rgba(123,211,137,0.04);font-size:13px;">Information We Collect</a>
+                  <a href="#data-requests" style="color:var(--accent);text-decoration:none;padding:6px 10px;border-radius:8px;border:1px solid rgba(123,211,137,0.03);background:rgba(123,211,137,0.04);font-size:13px;">Your Rights</a>
+                </div>
+
+                <h2 id="introduction">1. Introduction</h2>
+                <p>This Privacy Policy explains how <strong>KOG (Kleiner Oil Group)</strong> collects, uses, stores, and manages information through the <strong>KOG Bot</strong> and within KOG-managed communities.</p>
+                <p>KOG is based in and operated from the <strong>United Kingdom</strong>. Our community includes members primarily located in the <strong>United Kingdom, the European Union, and the United States</strong>, and this policy is written to address the data protection laws relevant to those regions.</p>
+                <p>By interacting with the bot, participating in KOG events, or joining KOG-managed environments, you acknowledge the data handling practices described in this policy.</p>
+
+                <hr />
+
+                <h2 id="who-we-are">2. Who We Are</h2>
+                <p><strong>KOG (Kleiner Oil Group)</strong> is the data controller responsible for the personal data described in this policy. Contact details are provided in Section 12.</p>
+                <p>We do not currently have a formal Data Protection Officer (DPO), as this is not a legal requirement for an organisation of our size and processing activities. This will be reviewed if our processing activities change.</p>
+
+                <hr />
+
+                <h2 id="legal-basis">3. Legal Basis for Processing</h2>
+                <p>We process personal data under the following lawful bases, in accordance with the UK GDPR, the EU GDPR (for EU-based members), and the Data Protection Act 2018:</p>
+                <ul>
+                  <li><strong>Legitimate Interest</strong> - maintaining community safety, managing event leaderboards, quota tracking, and enforcing server rules.</li>
+                  <li><strong>Consent</strong> - when you voluntarily submit information or trigger bot commands.</li>
+                  <li><strong>Compliance &amp; Safety</strong> - protecting the community from ban evasion, harassment, and security threats.</li>
+                  <li><strong>Legal Obligation</strong> - where we are required to retain or disclose data to comply with applicable law.</li>
+                </ul>
+                <p>Where our legal basis is legitimate interest, we have considered whether that interest is overridden by your rights and freedoms, and concluded it is not, given the limited and community-specific nature of the data involved.</p>
+
+                <hr />
+
+                <h2 id="information-we-collect">4. Information We Collect</h2>
+
+                <h3>4.1 Bot Interaction &amp; Event Data</h3>
+                <p>To track medals, event participation, and quotas, we store the following data tied to your unique Discord User ID:</p>
+                <ul>
+                  <li><strong>User Identification:</strong> Discord User ID (<code class="inline">userId</code>).</li>
+                  <li><strong>Participation Metrics:</strong> <code class="inline">eventsAttended</code>, <code class="inline">eventsHosted</code>, <code class="inline">merits</code>, <code class="inline">trainingsAttended</code>, <code class="inline">squadAttended</code>, <code class="inline">squadMerit</code>, <code class="inline">squadHosted</code>.</li>
+                  <li><strong>Platform Attributes:</strong> Assigned Discord roles (for quota and permission verification).</li>
+                </ul>
+
+                <h3>4.2 Moderation and Safety Records</h3>
+                <p>To protect our community and enforce rules, authorised staff may record:</p>
+                <ul>
+                  <li>Moderation actions (warnings, strikes, kicks, and bans).</li>
+                  <li>Timestamps and moderator notes explaining action reasons.</li>
+                  <li>Relevant evidence (such as message excerpts or screenshots of rule violations).</li>
+                </ul>
+
+                <h3>4.3 Public Data Checks</h3>
+                <p>For verification and safety compliance, our automated systems or staff may inspect <strong>publicly available</strong> information, including:</p>
+                <ul>
+                  <li>Activity in KOG-managed channels.</li>
+                  <li>Public Roblox profile data, group memberships, and public badges/inventories, to check for restricted or blacklisted items.</li>
+                </ul>
+                <p class="note"><strong>Note:</strong> We do not collect IP addresses, payment details, private direct messages, or non-public personal information.</p>
+
+                <hr />
+
+                <h2 id="automated-checks">5. Automated Checks and Human Review</h2>
+                <p>Some of our public data checks (Section 4.3) are performed automatically. Where an automated check could in some circumstances result in action against you - including failing background checks, and in rare cases, removal from the group. You may contact us via Kleiner Internal Affairs Department (KIAD) (Section 12) to query or appeal any decision you believe was made in error.</p>
+
+                <hr />
+
+                <h2 id="data-sharing">6. Data Sharing &amp; Third Parties</h2>
+                <p>We <strong>do not</strong> sell, trade, or commercially distribute your data.</p>
+                <p>Data is handled internally. Moderation and background check records may only be shared with affiliate administrative branches (such as QSOC, QIAD, or KIAD HR) on a strict <strong>need-to-know basis</strong>, for legitimate community safety purposes.</p>
+                <p>Data will not be shared with external, non-affiliated third parties unless required by law.</p>
+                <p>The bot operates on <strong>Discord's infrastructure</strong>, and by using Discord you are also subject to <a href="https://discord.com/privacy" style="color:var(--accent);text-decoration:underline;">Discord's own Privacy Policy</a> and Terms of Service, which govern how Discord itself processes and stores data on its platform. We do not control, and are not responsible for, Discord's own data handling practices.</p>
+
+                <hr />
+
+                <h2 id="international-transfers">7. International Data Transfers</h2>
+                <p>Because we operate on Discord's infrastructure, data may be processed or stored on servers located outside the UK or European Economic Area (EEA), including in the United States.</p>
+                <p>Where this occurs, transfers are made under the safeguards Discord itself has in place (such as Standard Contractual Clauses or equivalent mechanisms, as described in Discord's own Privacy Policy). We do not maintain separate international transfer agreements beyond those already governing our use of the Discord platform.</p>
+
+                <hr />
+
+                <h2 id="retention">8. Data Retention Policy</h2>
+                <p>We do not hold personal data indefinitely without justification. We operate a two-tier retention system:</p>
+                <ul>
+                  <li><strong>Operational &amp; Event Data</strong> (medals, merits, stats): Retained for as long as you remain an active member of the KOG community. If you wish to have your data removed, you may request so via Section 12 in accordance with Section <strong>30 days</strong>.</li>
+                  <li><strong>Moderation &amp; Safety Records</strong>: Warning logs, strikes, and ban records are retained for as long as they are needed to prevent to ban evasion and maintain community safety.</li>
+                </ul>
+
+                <hr />
+
+                <h2 id="data-requests">9. Your Rights &amp; Data Requests</h2>
+
+                <h3>9.1 UK and EU Residents</h3>
+                <p>If you are located in the UK or EU, under the UK GDPR / EU GDPR you have the following rights:</p>
+                <ul>
+                  <li><strong>Right to Access</strong> - view much of your stored event data directly via the <code class="inline">/mydata</code> bot command, or request a full copy of your records from administration.</li>
+                  <li><strong>Right to Rectification</strong> - request correction of inaccurate or outdated information.</li>
+                  <li><strong>Right to Erasure</strong> - request deletion of your non-essential event and merit data at any time.</li>
+                  <li><strong>Right to Restrict Processing</strong> - request that we limit how we use your data in certain circumstances.</li>
+                  <li><strong>Right to Object</strong> - object to processing based on legitimate interest.</li>
+                  <li><strong>Right to Lodge a Complaint</strong> - you have the right to complain to a supervisory authority. In the UK, this is the <strong>Information Commissioner's Office (ICO)</strong>, reachable at ico.org.uk. If you are based in the EU, you may complain to your local data protection authority instead.</li>
+                </ul>
+                <p class="muted"><strong>Note on Moderation Data Erasure:</strong> Requests to erase active moderation records, ban logs, or ongoing disciplinary files may be lawfully refused where keeping that data is strictly necessary to protect server safety, prevent ban evasion, or satisfy legal obligations, under UK/EU GDPR Article 17.</p>
+                <p>Data requests will be processed within <strong>30 days</strong> of receipt.</p>
+
+                <h3>9.2 California Residents (CCPA/CPRA)</h3>
+                <p>If you are a California resident, and to the extent the California Consumer Privacy Act (as amended by the CPRA) applies to our processing, you have the right to:</p>
+                <ul>
+                  <li>Know what personal information we collect and how it is used (see Section 4).</li>
+                  <li>Request deletion of your personal information, subject to the same moderation-record exceptions described in Section 9.1.</li>
+                  <li>Non-discrimination for exercising your privacy rights.</li>
+                </ul>
+                <p><strong>We do not sell or share personal information for cross-context behavioural advertising</strong>, so there is no "opt-out of sale/sharing" mechanism required. You may still submit any request under this section using the contact details in Section 12.</p>
+
+                <hr />
+
+                <h2 id="age">10. Age Requirement &amp; Children's Privacy</h2>
+                <p>The KOG Bot and KOG services are intended for users who are <strong>13 years of age or older</strong>, in line with Discord's own Terms of Service and U.S. COPPA requirements.</p>
+                <p class="muted"><strong>Note for EU users:</strong> Some EU member states set the age of consent for information society services higher than 13 (up to 16, under GDPR Article 8). If you are located in an EU member state with a higher age threshold, you should have parental or guardian consent to use the bot until you reach that threshold.</p>
+
+                <hr />
+
+                <h2 id="security">11. Data Security &amp; Breach Notification</h2>
+                <p>We take reasonable technical and organisational measures to protect the data we hold. In the event of a personal data breach that poses a risk to your rights and freedoms, we will notify affected users and, where legally required, the ICO or relevant supervisory authority, without undue delay.</p>
+
+                <hr />
+
+                <h2 id="contact">12. Contact &amp; Data Requests</h2>
+                <p>To submit a data access, correction, or deletion request, please contact us with your <strong>Discord User ID</strong>:</p>
+                <ul>
+                  <li><strong>Organisation:</strong>
+                    <a href="https://discord.gg/ZWD23pK9pC" style="color:var(--accent);text-decoration:underline;" target="_blank">KOG / Kleiner Oil Group</a>
+                  </li>
+
+                  <li><strong>Discord Contact:</strong>
+                    <a href="https://discordapp.com/users/1138235120424325160" style="color:var(--accent);text-decoration:underline;" target="_blank">Sheepboi546</a>
+                    (Bot and Server Administrator)
+                  </li>
+
+                  <li><strong>Email:</strong>
+                    <a href="mailto:sheepatkog546@gmail.com" style="color:var(--accent);text-decoration:underline;">sheepatkog546@gmail.com</a>
+                  </li>
+
+                  <li><strong>Kleiner Internal Affairs Department (KIAD):</strong>
+                    <a href="https://discord.gg/HnsdgAGGMX" style="color:var(--accent);text-decoration:underline;" target="_blank">https://discord.gg/HnsdgAGGMX</a>
+                  </li>
+                </ul>
+                <p>Data requests will be processed within <strong>30 days</strong> of receipt.</p>
+
+                <hr />
+
+                <h2 id="changes">13. Changes to This Policy</h2>
+                <p>We reserve the right to update this policy at any time. Updates will be indicated by the "Last Updated" date at the top of this document. Continued interaction with the bot or community constitutes acceptance of the updated policy. - Created by Sinsoxia, maintained by Sheepboi546.</p>
+
+                <div style="height:18px;"></div>
+              </div>
+            </section>
+
+          </div>
+
+          <footer>
+            <div class="small">KOG - Kleiner Oil Group</div>
+            <div class="small" id="footer-sub"></div>
+          </footer>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <script>
+    (function(){
+      // Single source of truth for the privacy policy last updated value
+      const PRIVACY_LAST_UPDATED = '25/07/2026 GMT';
+
+      // DOM references
+      const navHome = document.getElementById('nav-home');
+      const navStatus = document.getElementById('nav-status');
+      const navPolicy = document.getElementById('nav-policy');
+
+      const panelHome = document.getElementById('panel-home');
+      const panelStatus = document.getElementById('panel-status');
+      const panelPolicy = document.getElementById('panel-policy');
+
+      const headerTitle = document.getElementById('header-title');
+      const headerSub = document.getElementById('header-sub');
+      const footerSub = document.getElementById('footer-sub');
+      const logoWrap = document.getElementById('logo');
+
+      // Homepage elements
+      const statDiscordMembers = document.getElementById('stat-discord-members');
+      const statRobloxMembers = document.getElementById('stat-roblox-members');
+
+      // Fancy breakdown elements
+      const totalEventsAttendedEl = document.getElementById('total-events-attended');
+      const totalMeritsEl = document.getElementById('total-merits');
+      const totalEventsHostedEl = document.getElementById('total-events-hosted');
+      const totalModerationLogsEl = document.getElementById('total-moderation-logs');
+      const totalDataStoredEl = document.getElementById('total-data-stored');
+      const totalDataStoredKBEl = document.getElementById('total-data-stored-kb');
+
+      if (!navHome || !navStatus || !navPolicy || !panelHome || !panelStatus || !panelPolicy || !headerTitle) {
+        console.error('Required DOM elements missing.');
+        return;
+      }
+
+      const buttons = [navHome, navStatus, navPolicy];
+      const panels = {
+        'nav-home': panelHome,
+        'nav-status': panelStatus,
+        'nav-policy': panelPolicy
+      };
+
+      const routeMap = {
+        'nav-home': { hash: '#home', title: 'Kleiner Oil Group', docTitle: 'Kleiner Oil Group' },
+        'nav-status': { hash: '#status', title: 'Kleiner Oil Group', docTitle: 'Kleiner Oil Group' },
+        'nav-policy': { hash: '#privacy', title: 'Privacy Policy - KOG (Kleiner Oil Group)', docTitle: 'Privacy Policy - KOG (Kleiner Oil Group)' }
+      };
+
+      function setActive(buttonId, pushHistory = true){
+        // update buttons
+        buttons.forEach(btn => {
+          const active = btn.id === buttonId;
+          btn.classList.toggle('active', active);
+          btn.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+
+        // update panels
+        Object.keys(panels).forEach(key => {
+          const p = panels[key];
+          if (key === buttonId) {
+            p.classList.add('active');
+            p.setAttribute('tabindex', '-1');
+            setTimeout(() => { try { p.focus({preventScroll:true}); } catch(e){} }, 50);
+          } else {
+            p.classList.remove('active');
+            p.removeAttribute('tabindex');
+          }
+        });
+
+        // update header title, document title, and privacy-only last-updated fields
+        const route = routeMap[buttonId];
+        if (route) {
+          headerTitle.textContent = route.title;
+          document.title = route.docTitle;
+
+          if (buttonId === 'nav-policy') {
+            // show last updated only on privacy policy
+            headerSub.innerHTML = `Last Updated: <strong>${PRIVACY_LAST_UPDATED}</strong>`;
+            footerSub.innerHTML = `Last Updated: <strong>${PRIVACY_LAST_UPDATED}</strong>`;
+          } else {
+            // hide last updated elsewhere
+            headerSub.textContent = '';
+            footerSub.textContent = '';
+          }
+
+          if (pushHistory) history.replaceState(null, '', route.hash);
+        }
+      }
+
+      // click handlers
+      navHome.addEventListener('click', () => setActive('nav-home'));
+      navStatus.addEventListener('click', () => setActive('nav-status'));
+      navPolicy.addEventListener('click', () => setActive('nav-policy'));
+
+      // logo click: go home
+      logoWrap.addEventListener('click', () => setActive('nav-home'));
+      logoWrap.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActive('nav-home'); } });
+
+      // keyboard navigation (left/right)
+      document.addEventListener('keydown', (e) => {
+        const activeIndex = buttons.findIndex(b => b.classList.contains('active'));
+        if (e.key === 'ArrowRight') {
+          const next = (activeIndex + 1) % buttons.length;
+          buttons[next].click();
+        } else if (e.key === 'ArrowLeft') {
+          const prev = (activeIndex - 1 + buttons.length) % buttons.length;
+          buttons[prev].click();
+        }
+      });
+
+      // On load: read hash and set panel accordingly
+      function routeFromHash(hash) {
+        if (!hash) return 'nav-home';
+        if (hash === '#home') return 'nav-home';
+        if (hash === '#status') return 'nav-status';
+        if (hash === '#privacy' || hash === '#policy') return 'nav-policy';
+        if (hash.startsWith('#introduction') || hash.startsWith('#who-we-are') || hash.startsWith('#legal-basis') || hash.startsWith('#information-we-collect') || hash.startsWith('#data-requests')) {
+          return 'nav-policy';
+        }
+        return 'nav-home';
+      }
+
+      // initial activation based on location.hash
+      const initial = routeFromHash(location.hash);
+      setActive(initial, false);
+
+      // respond to hash changes (back/forward)
+      window.addEventListener('hashchange', () => {
+        const r = routeFromHash(location.hash);
+        setActive(r, false);
+      });
+
+      // Keep all stats at 0 for now (aligned, monospace)
+      function setInitialZeros() {
+        statDiscordMembers.textContent = '0';
+        statRobloxMembers.textContent = '0';
+        totalEventsAttendedEl.textContent = '0';
+        totalMeritsEl.textContent = '0';
+        totalEventsHostedEl.textContent = '0';
+        totalModerationLogsEl.textContent = '0';
+        totalDataStoredEl.textContent = '0 KB';
+        totalDataStoredKBEl.textContent = '0';
+      }
+
+      setInitialZeros();
+
+      // Expose a helper so server-driven data can update stats later
+      window.updateOverallStats = function(stats = {}) {
+        if (stats.discordMembers !== undefined) statDiscordMembers.textContent = stats.discordMembers;
+        if (stats.robloxMembers !== undefined) statRobloxMembers.textContent = stats.robloxMembers;
+
+        if (stats.totalEventsAttended !== undefined) totalEventsAttendedEl.textContent = stats.totalEventsAttended;
+        if (stats.totalMerits !== undefined) totalMeritsEl.textContent = stats.totalMerits;
+        if (stats.totalEventsHosted !== undefined) totalEventsHostedEl.textContent = stats.totalEventsHosted;
+        if (stats.totalModerationLogs !== undefined) totalModerationLogsEl.textContent = stats.totalModerationLogs;
+        if (stats.totalDataStored !== undefined) totalDataStoredEl.textContent = stats.totalDataStored;
+        if (stats.totalDataStoredKB !== undefined) totalDataStoredKBEl.textContent = stats.totalDataStoredKB;
+      };
+    })();
+  </script>
+</body>
+</html>
