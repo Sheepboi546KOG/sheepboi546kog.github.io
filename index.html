@@ -427,7 +427,7 @@
           <div class="header-left" style="gap:12px;">
             <div id="logo" class="logo" title="Go to homepage" role="link" tabindex="0">
               <img id="logo-img"
-                   src="https://cdn.discordapp.com/attachments/857448871487602698/1448806414859501688/image.png?ex=6a653b1e&is=6a63e99e&hm=12688e66c298da029f5309d24a7e6c8ac093e42a1647d8f6c022bb4305774dee&"
+                   src="https://plain-weur-prod-public.komododecks.com/202607/25/8PE9Edu7vipVEfjib7N0/image.png"
                    alt="KOG logo"
                    onerror="this.style.display='none';document.getElementById('logo-fallback').style.display='flex'">
               <div id="logo-fallback" aria-hidden="true">KOG</div>
@@ -453,7 +453,7 @@
             <section id="panel-home" class="panel active" role="region" aria-labelledby="nav-home">
               <div class="home-wrap" aria-live="polite">
                 <div class="home-logo-circle" aria-hidden="false">
-                  <img src="https://cdn.discordapp.com/attachments/857448871487602698/1448806414859501688/image.png?ex=6a653b1e&is=6a63e99e&hm=12688e66c298da029f5309d24a7e6c8ac093e42a1647d8f6c022bb4305774dee&" alt="KOG logo circle">
+                  <img src="https://plain-weur-prod-public.komododecks.com/202607/25/8PE9Edu7vipVEfjib7N0/image.png" alt="KOG logo circle">
                 </div>
                 <div class="home-est">est April 2025</div>
 
@@ -489,7 +489,7 @@
                     <div class="label"><span class="badge">E</span> Total Events Attended:</div>
                     <div class="label" style="margin-top:8px;"><span class="badge">M</span> Total Merits:</div>
                     <div class="label" style="margin-top:8px;"><span class="badge">H</span> Total Events Hosted:</div>
-                    <div class="label" style="margin-top:8px;"><span class="badge">L</span> Total Moderation Logs:</div>
+                    <div class="label" style="margin-top:8px;"><span class="badge">L</span> Total Numerical Sum:</div>
                     <div class="label" style="margin-top:8px;"><span class="badge">D</span> Total Data Stored:</div>
                     <div class="label" style="margin-top:8px;"><span class="badge">K</span> Total Data Stored (KB):</div>
                   </div>
@@ -498,7 +498,7 @@
                     <div class="value" id="total-events-attended">0</div>
                     <div class="value" id="total-merits" style="margin-top:8px;">0</div>
                     <div class="value" id="total-events-hosted" style="margin-top:8px;">0</div>
-                    <div class="value" id="total-moderation-logs" style="margin-top:8px;">0</div>
+                    <div class="value" id="total-numerical-sum" style="margin-top:8px;">0</div>
                     <div class="value" id="total-data-stored" style="margin-top:8px;">0 KB</div>
                     <div class="value" id="total-data-stored-kb" style="margin-top:8px;">0</div>
                   </div>
@@ -597,9 +597,9 @@
                 <hr />
 
                 <h2 id="retention">8. Data Retention Policy</h2>
-                <p>We do not hold personal data indefinitely without justification. We operate a two-tier retention system:</p>
+                <p>We do not hold personal data indefinitely without justification.</p>
                 <ul>
-                  <li><strong>Operational &amp; Event Data</strong> (medals, merits, stats): Retained for as long as you remain an active member of the KOG community. If you wish to have your data removed, you may request so via Section 12 in accordance with Section <strong>30 days</strong>.</li>
+                  <li><strong>Operational &amp; Event Data</strong> (medals, merits, stats): We retain certain operational data indefinitely to ensure users do not lose progress or historical records. This includes event attendance, merits earned, hosted events, and other activity-based information.
                   <li><strong>Moderation &amp; Safety Records</strong>: Warning logs, strikes, and ban records are retained for as long as they are needed to prevent to ban evasion and maintain community safety.</li>
                 </ul>
 
@@ -687,7 +687,7 @@
   <script>
     (function(){
       // Single source of truth for the privacy policy last updated value
-      const PRIVACY_LAST_UPDATED = '25/07/2026 GMT';
+      const PRIVACY_LAST_UPDATED = '26/07/2026 GMT';
 
       // DOM references
       const navHome = document.getElementById('nav-home');
@@ -711,7 +711,7 @@
       const totalEventsAttendedEl = document.getElementById('total-events-attended');
       const totalMeritsEl = document.getElementById('total-merits');
       const totalEventsHostedEl = document.getElementById('total-events-hosted');
-      const totalModerationLogsEl = document.getElementById('total-moderation-logs');
+      const totalNumericalSumEl = document.getElementById('total-numerical-sum');
       const totalDataStoredEl = document.getElementById('total-data-stored');
       const totalDataStoredKBEl = document.getElementById('total-data-stored-kb');
 
@@ -821,18 +821,48 @@
       function setInitialZeros() {
         statDiscordMembers.textContent = '0';
         statRobloxMembers.textContent = '0';
-        totalEventsAttendedEl.textContent = '0';
-        totalMeritsEl.textContent = '0';
-        totalEventsHostedEl.textContent = '0';
-        totalModerationLogsEl.textContent = '0';
-        totalDataStoredEl.textContent = '0 KB';
-        totalDataStoredKBEl.textContent = '0';
+        totalEventsAttendedEl.textContent = 'Loading...';
+        totalMeritsEl.textContent = 'Loading...';
+        totalEventsHostedEl.textContent = 'Loading...';
+        totalNumericalSumEl.textContent = 'Loading...';
+        totalDataStoredEl.textContent = 'Loading...';
+        totalDataStoredKBEl.textContent = 'Loading...';
       }
 
       setInitialZeros();
 
       // Expose a helper so server-driven data can update stats later
-      window.updateOverallStats = function(stats = {}) {
+      
+      async function loadStats(){
+        try{
+          const r=await fetch('https://sheepboikleiner546io.xyz/data/');
+          const d=await r.json();
+          const s=d.sums;
+          const vals={
+            a:s.eventsAttended+s.squadAttended,
+            m:s.merits+s.squadMerit,
+            h:s.eventsHosted+s.squadHosted,
+            n:d.totalNumericSum,
+            ds:d.sizeEstimate.estimatedSizeHuman,
+            kb:Math.round(d.sizeEstimate.estimatedSizeBytes/1024)
+          };
+          setTimeout(()=>{
+            [totalEventsAttendedEl,totalMeritsEl,totalEventsHostedEl,totalNumericalSumEl,totalDataStoredEl,totalDataStoredKBEl].forEach(e=>{e.style.transition='opacity .35s';e.style.opacity='0';});
+            setTimeout(()=>{
+              totalEventsAttendedEl.textContent=vals.a;
+              totalMeritsEl.textContent=vals.m;
+              totalEventsHostedEl.textContent=vals.h;
+              totalNumericalSumEl.textContent=vals.n;
+              totalDataStoredEl.textContent=vals.ds;
+              totalDataStoredKBEl.textContent=vals.kb;
+              [totalEventsAttendedEl,totalMeritsEl,totalEventsHostedEl,totalNumericalSumEl,totalDataStoredEl,totalDataStoredKBEl].forEach(e=>e.style.opacity='1');
+            },350);
+          },500);
+        }catch(e){console.error(e);}
+      }
+      loadStats();
+
+window.updateOverallStats = function(stats = {}) {
         if (stats.discordMembers !== undefined) statDiscordMembers.textContent = stats.discordMembers;
         if (stats.robloxMembers !== undefined) statRobloxMembers.textContent = stats.robloxMembers;
 
