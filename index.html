@@ -686,10 +686,10 @@
 
   <script>
     (function(){
-      // Single source of truth for the privacy policy last updated value
+
       const PRIVACY_LAST_UPDATED = '26/07/2026 GMT';
 
-      // DOM references
+
       const navHome = document.getElementById('nav-home');
       const navStatus = document.getElementById('nav-status');
       const navPolicy = document.getElementById('nav-policy');
@@ -703,11 +703,11 @@
       const footerSub = document.getElementById('footer-sub');
       const logoWrap = document.getElementById('logo');
 
-      // Homepage elements
+
       const statDiscordMembers = document.getElementById('stat-discord-members');
       const statRobloxMembers = document.getElementById('stat-roblox-members');
 
-      // Fancy breakdown elements
+
       const totalEventsAttendedEl = document.getElementById('total-events-attended');
       const totalMeritsEl = document.getElementById('total-merits');
       const totalEventsHostedEl = document.getElementById('total-events-hosted');
@@ -734,14 +734,14 @@
       };
 
       function setActive(buttonId, pushHistory = true){
-        // update buttons
+
         buttons.forEach(btn => {
           const active = btn.id === buttonId;
           btn.classList.toggle('active', active);
           btn.setAttribute('aria-selected', active ? 'true' : 'false');
         });
 
-        // update panels
+
         Object.keys(panels).forEach(key => {
           const p = panels[key];
           if (key === buttonId) {
@@ -754,18 +754,15 @@
           }
         });
 
-        // update header title, document title, and privacy-only last-updated fields
         const route = routeMap[buttonId];
         if (route) {
           headerTitle.textContent = route.title;
           document.title = route.docTitle;
 
           if (buttonId === 'nav-policy') {
-            // show last updated only on privacy policy
             headerSub.innerHTML = `Last Updated: <strong>${PRIVACY_LAST_UPDATED}</strong>`;
             footerSub.innerHTML = `Last Updated: <strong>${PRIVACY_LAST_UPDATED}</strong>`;
           } else {
-            // hide last updated elsewhere
             headerSub.textContent = '';
             footerSub.textContent = '';
           }
@@ -774,16 +771,16 @@
         }
       }
 
-      // click handlers
+
       navHome.addEventListener('click', () => setActive('nav-home'));
       navStatus.addEventListener('click', () => setActive('nav-status'));
       navPolicy.addEventListener('click', () => setActive('nav-policy'));
 
-      // logo click: go home
+
       logoWrap.addEventListener('click', () => setActive('nav-home'));
       logoWrap.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActive('nav-home'); } });
 
-      // keyboard navigation (left/right)
+
       document.addEventListener('keydown', (e) => {
         const activeIndex = buttons.findIndex(b => b.classList.contains('active'));
         if (e.key === 'ArrowRight') {
@@ -795,7 +792,7 @@
         }
       });
 
-      // On load: read hash and set panel accordingly
+
       function routeFromHash(hash) {
         if (!hash) return 'nav-home';
         if (hash === '#home') return 'nav-home';
@@ -807,17 +804,16 @@
         return 'nav-home';
       }
 
-      // initial activation based on location.hash
+
       const initial = routeFromHash(location.hash);
       setActive(initial, false);
 
-      // respond to hash changes (back/forward)
+
       window.addEventListener('hashchange', () => {
         const r = routeFromHash(location.hash);
         setActive(r, false);
       });
 
-      // Keep all stats at 0 for now (aligned, monospace)
       function setInitialZeros() {
         statDiscordMembers.textContent = '0';
         statRobloxMembers.textContent = '0';
@@ -831,7 +827,6 @@
 
       setInitialZeros();
 
-      // Expose a helper so server-driven data can update stats later
       
       async function loadStats(){
         try{
